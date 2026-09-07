@@ -1,0 +1,31 @@
+{
+  "name": "Astian Mail",
+  "vendor": "Astian",
+  "appId": "org.astian.mail",
+  "binaryName": "astian-mail",
+  "version": {
+    "product": "thunderbird",
+    "version": "155.0"
+  },
+  "buildOptions": {
+    "windowsUseSymbolicLinks": false
+  },
+  "addons": {},
+  "brands": {
+    "release": {
+      "backgroundColor": "#282A33",
+      "brandShorterName": "Astian",
+      "brandShortName": "Astian Mail",
+      "brandFullName": "Astian Mail",
+      "release": {
+        "displayVersion": "1.0.0"
+      }
+    }
+  },
+  "license": {
+    "ignoredFiles": [
+      ".*\\.json"
+    ],
+    "licenseType": "MPL-2.0"
+  }
+}

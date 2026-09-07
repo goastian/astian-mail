@@ -1,0 +1,20 @@
+export MOZ_USER_DIR="${name}"
+# Thunderbird's comm/mail/moz.configure owns MOZ_APP_BASENAME. Setting it here
+# conflicts with the value it implies and prevents configure from running.
+export MOZ_DISTRIBUTION_ID=${appId}
+export MOZ_INCLUDE_SOURCE_INFO=1
+# The Thunderbird source checkout supplies its own repository and changeset.
+# Overriding them with the generic scaffold values makes configure fail.
+
+ac_add_options --enable-bootstrap
+ac_add_options --enable-project=comm/mail
+ac_add_options --enable-hardening
+ac_add_options --enable-rust-simd
+ac_add_options --enable-release
+ac_add_options --enable-optimize
+ac_add_options --with-ccache=sccache
+ac_add_options --disable-debug
+ac_add_options --enable-updater
+
+mk_add_options MOZ_TELEMETRY_REPORTING=
+mk_add_options MOZ_DATA_REPORTING=

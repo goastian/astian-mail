@@ -1,0 +1,45 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+# Linux hosts need Amelia's prepared Windows sysroot and Wine tools. The npm
+# Windows scripts set ASTIAN_CROSS_COMPILING for this project-local setup.
+if test "$ASTIAN_CROSS_COMPILING"; then
+  export MOZ_STUB_INSTALLER=1
+  export CROSS_BUILD=1
+  export CROSS_COMPILE=1
+
+  if test -z "$WINSYSROOT" -a -d "$HOME/.mozbuild/vs"; then
+    export WINSYSROOT="$HOME/.mozbuild/vs"
+  fi
+
+  if test -d "$HOME/.mozbuild/wine/bin"; then
+    export PATH="$HOME/.mozbuild/wine/bin:$PATH"
+  fi
+
+  if test -d "$HOME/.mozbuild/nsis/bin"; then
+    export PATH="$HOME/.mozbuild/nsis/bin:$PATH"
+  fi
+
+  export WINEPREFIX="$HOME/.mozbuild/wineprefix"
+  export WINEDEBUG=-all
+  mk_add_options "export WINEPREFIX=$HOME/.mozbuild/wineprefix"
+  mk_add_options "export WINEDEBUG=-all"
+  if test -d "$HOME/.mozbuild/wine/bin"; then
+    mk_add_options "export PATH=$HOME/.mozbuild/nsis/bin:$HOME/.mozbuild/wine/bin:$PATH"
+  fi
+
+  # Support the Visual Studio sysroot currently supplied by Amelia.
+  ac_add_options --disable-stl-hardening
+fi
+
+ac_add_options --disable-maintenance-service
+ac_add_options --disable-bits-download
+
+if test "$AMELIA_COMPAT" = "x86_64"; then
+  ac_add_options --target=x86_64-pc-windows-msvc
+elif test "$AMELIA_COMPAT" = "aarch64"; then
+  ac_add_options --target=aarch64-pc-windows-msvc
+  export MOZ_LTO=cross,thin
+  ac_add_options --enable-lto=cross,thin
+fi

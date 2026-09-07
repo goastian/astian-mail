@@ -1,0 +1,30 @@
+# Prefer Amelia/Mach's bootstrapped Clang toolchain, matching Midori's Linux
+# configuration. Fall back to the compiler provided by the host when needed.
+if test -d "$HOME/.mozbuild/clang/bin"; then
+    export CC="$HOME/.mozbuild/clang/bin/clang"
+    export CXX="$HOME/.mozbuild/clang/bin/clang++"
+else
+    export CC=clang
+    export CXX=clang++
+fi
+
+# Keep target selection in step with the npm build scripts. SURFER_COMPAT is
+# also used by Amelia's Midori-based cross-compilation configuration.
+if test "$SURFER_COMPAT" = "x86_64"; then
+    ac_add_options --target=x86_64-pc-linux
+elif test "$SURFER_COMPAT" = "aarch64"; then
+    ac_add_options --target=aarch64-linux-gnu
+    export MOZ_LTO=cross,thin
+    ac_add_options --enable-lto=cross,thin
+
+    # For x86_64 hosts compiling ARM64, use the sysroot prepared by Amelia.
+    if test -d "$HOME/.mozbuild/sysroot-aarch64-linux-gnu"; then
+        ac_add_options --with-sysroot="$HOME/.mozbuild/sysroot-aarch64-linux-gnu"
+    elif test -d "$topsrcdir/sysroot-aarch64-linux-gnu"; then
+        ac_add_options --with-sysroot="$topsrcdir/sysroot-aarch64-linux-gnu"
+    fi
+fi
+
+# Desktop notification sounds and media playback backends.
+ac_add_options --enable-alsa
+ac_add_options --enable-pulseaudio

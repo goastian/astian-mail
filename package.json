@@ -1,0 +1,46 @@
+{
+  "name": "astian-mail",
+  "version": "1.0.0",
+  "description": "Astian Mail, Your email, calendar, and contacts. All in one place..",
+  "private": true,
+  "license": "MPL-2.0",
+  "type": "module",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "packageManager": "npm@12.0.2",
+  "allowScripts": {
+    "sharp@0.32.6": true
+  },
+  "scripts": {
+    "amelia": "amelia",
+    "help": "amelia --help",
+    "download": "amelia download",
+    "import": "amelia import && node scripts/prepare-thunderbird-branding.mjs",
+    "bootstrap": "amelia bootstrap",
+    "init": "npm run download && npm run import && npm run bootstrap",
+    "brand:release": "amelia set brand release && npm run import",
+    "build": "node scripts/prepare-thunderbird-branding.mjs && amelia build --jobs 1",
+    "start": "amelia run",
+    "run": "amelia run",
+    "package": "node scripts/prepare-thunderbird-branding.mjs && amelia package",
+    "build:linux-x64": "cross-env AMELIA_PLATFORM=linux AMELIA_COMPAT=x86_64 SURFER_COMPAT=x86_64 npm run build",
+    "build:linux-arm64": "cross-env AMELIA_PLATFORM=linux AMELIA_COMPAT=aarch64 SURFER_COMPAT=aarch64 npm run build",
+    "build:mac-x64": "cross-env AMELIA_PLATFORM=darwin AMELIA_COMPAT=x86_64 SURFER_COMPAT=x86_64 npm run build",
+    "build:mac-arm64": "cross-env AMELIA_PLATFORM=darwin AMELIA_COMPAT=aarch64 SURFER_COMPAT=aarch64 npm run build",
+    "build:win-x64": "cross-env AMELIA_PLATFORM=win32 AMELIA_COMPAT=x86_64 SURFER_COMPAT=x86_64 ASTIAN_CROSS_COMPILING=true npm run build",
+    "build:win-arm64": "cross-env AMELIA_PLATFORM=win32 AMELIA_COMPAT=aarch64 SURFER_COMPAT=aarch64 ASTIAN_CROSS_COMPILING=true npm run build",
+    "package:linux-x64": "cross-env AMELIA_PLATFORM=linux AMELIA_COMPAT=x86_64 SURFER_COMPAT=x86_64 npm run package",
+    "package:linux-arm64": "cross-env AMELIA_PLATFORM=linux AMELIA_COMPAT=aarch64 SURFER_COMPAT=aarch64 npm run package",
+    "package:mac-x64": "cross-env AMELIA_PLATFORM=darwin AMELIA_COMPAT=x86_64 SURFER_COMPAT=x86_64 npm run package",
+    "package:mac-arm64": "cross-env AMELIA_PLATFORM=darwin AMELIA_COMPAT=aarch64 SURFER_COMPAT=aarch64 npm run package",
+    "package:win-x64": "cross-env AMELIA_PLATFORM=win32 AMELIA_COMPAT=x86_64 SURFER_COMPAT=x86_64 ASTIAN_CROSS_COMPILING=true npm run package",
+    "package:win-arm64": "cross-env AMELIA_PLATFORM=win32 AMELIA_COMPAT=aarch64 SURFER_COMPAT=aarch64 ASTIAN_CROSS_COMPILING=true npm run package"
+  },
+  "dependencies": {
+    "@goastian/amelia": "2.0.0"
+  },
+  "devDependencies": {
+    "cross-env": "^10.1.0"
+  }
+}
